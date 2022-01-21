@@ -1,39 +1,28 @@
 import { Request, Response } from "express";
 import { UserRepository } from "../repositories/user.repository";
+import { BaseController } from "./base/base.controller";
 
 /**
  * @class UserController
  */
-class UserController {
+class UserController extends BaseController {
   userRepository: UserRepository;
 
   constructor() {
+    super();
     this.userRepository = new UserRepository();
   }
 
   /**
-   * Ping
+   * Get users list
    * @param req Request
    * @param res Response
    */
-  ping = async (req: Request, res: Response): Promise<void> => {
-    const users = await this.userRepository.find({});
-    res.json({
-      users,
-      status: "ok",
-      data: new Date(),
+  getAll = async (req: Request, res: Response): Promise<void> => {
+    const users = await this.userRepository.find({}, "_id login email", {
+      populate: ["photos"],
     });
-  };
-
-  /**
-   * Find
-   * @param req Request
-   * @param res Response
-   */
-  find = async (req: Request, res: Response): Promise<void> => {
-    res.json({
-      users: await this.userRepository.find({}),
-    });
+    this.successResponse(res, users);
   };
 }
 

@@ -5,4 +5,5 @@ export interface IConfigApp {
     secret: string;
     expiresIn: number;
   };
+  jpApiBase: string;
 }

@@ -17,25 +17,28 @@ export interface IUser {
   checkPassword?: (password: string) => boolean;
 }
 
-const UserSchema: Schema = new Schema<IUser, Model<IUser>>({
-  login: {
-    type: String,
-    required: true,
-    unique: true,
+const UserSchema: Schema = new Schema<IUser, Model<IUser>>(
+  {
+    login: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    registerDate: {
+      type: String,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  registerDate: {
-    type: String,
-  },
-});
+  { versionKey: false }
+);
 
 UserSchema.pre("save", async function (next) {
   this.password = crypto.createHash("md5").update(this.password).digest("hex");

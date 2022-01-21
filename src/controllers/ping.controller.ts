@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
+import { BaseController } from "./base/base.controller";
 
-class PingController {
-  async ping(_: Request, res: Response): Promise<void> {
-    res.json({
-      status: "ok",
-      data: new Date(),
+class PingController extends BaseController {
+  ping = async (req: Request, res: Response): Promise<void> => {
+    this.successResponse(res, {
+      date: new Date(),
+      headers: req.headers,
+      ip: req.ip,
     });
-  }
+  };
 }
 
 export default new PingController();

@@ -3,18 +3,28 @@ import logger from "morgan";
 import http from "http";
 import dotenv from "dotenv";
 dotenv.config();
+import { BaseRouter } from "./routes/base/base.router";
 import { PingRouter } from "./routes/ping.router";
 import { AuthRouter } from "./routes/auth.router";
 import { UserRouter } from "./routes/user.router";
-import { BaseRouter } from "./routes/base/base.router";
+import { MediaRouter } from "./routes/media.router";
 import { errorHandler } from "./middlewares/error.middleware";
 
 import db from "./datasources/mongo.datasource";
+import { ObjectId } from "mongoose";
 
 export type TApplicationConfig = {
   port: number;
   host: string;
 };
+
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser: { id: ObjectId; email: string };
+    }
+  }
+}
 
 export class BootstrapApplication {
   app: Application;
@@ -50,6 +60,7 @@ export class BootstrapApplication {
     this.routes.push(new PingRouter(this.app));
     this.routes.push(new AuthRouter(this.app));
     this.routes.push(new UserRouter(this.app));
+    this.routes.push(new MediaRouter(this.app));
   }
 
   initPreMiddlewares() {

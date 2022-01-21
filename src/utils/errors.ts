@@ -19,7 +19,13 @@ export class HttpErrors extends AppError {
     super();
   }
 
-  NotFound(msg: string = "Not Found") {
+  Unauthorized(msg: string = "Authorization error") {
+    this.message = msg;
+    this.statusCode = 401;
+    return this;
+  }
+
+  NotFound(msg: string = "Not found") {
     this.message = msg;
     this.statusCode = 404;
     return this;
@@ -31,9 +37,13 @@ export class HttpErrors extends AppError {
     return this;
   }
 
-  InvalidCredentials(msg: string = "Invalid credentials") {
+  InvalidCredentials(
+    msg: string = "Invalid credentials",
+    details: string[] = []
+  ) {
     this.message = msg;
     this.statusCode = 400;
+    this.details = details;
     return this;
   }
 }

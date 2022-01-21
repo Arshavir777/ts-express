@@ -1,4 +1,4 @@
-import { FilterQuery, Model } from "mongoose";
+import { FilterQuery, Model, QueryOptions, UpdateQuery } from "mongoose";
 import { IRead, IWrite } from "../interfaces/index.interface";
 
 export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
@@ -7,22 +7,36 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   constructor(model: Model<T>) {
     this.model = model;
   }
-  async find(filter: FilterQuery<T>): Promise<T[]> {
-    return await this.model.find(filter);
+  async find(
+    filter: FilterQuery<T> = {},
+    select: string | null = null,
+    options: QueryOptions | null = {}
+  ): Promise<T[]> {
+    return this.model.find(filter, select, options);
   }
   async create(item: T): Promise<T> {
-    return await this.model.create(item);
+    return this.model.create(item);
+  }
+  async insertMany(items: T[]): Promise<T[]> {
+    return this.model.insertMany(items);
   }
   async findOne(filter: FilterQuery<T>): Promise<T> {
-    return await this.model.findOne(filter);
+    return this.model.findOne(filter);
   }
   async findById(id: string): Promise<T> {
-    return await this.model.findById(id);
+    return this.model.findById(id);
   }
-  update(id: string, item: T): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async deleteOne(filter: FilterQuery<T>): Promise<any> {
+    return this.model.deleteMany(filter);
   }
-  delete(id: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async deleteMany(filter: FilterQuery<T>): Promise<any> {
+    return this.model.deleteMany(filter);
+  }
+  async findOneAndUpdate(
+    filter: FilterQuery<T>,
+    item: UpdateQuery<T>,
+    options: QueryOptions = { new: true }
+  ): Promise<T> {
+    return this.model.findOneAndUpdate(filter, item, options);
   }
 }

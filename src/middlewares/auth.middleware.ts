@@ -1,32 +1,26 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../models/user.model";
 import { config } from "../config";
 import jwt from "jsonwebtoken";
+import { HttpErrors } from "../utils/errors";
 
-export function authenticate(
-  req: Request & { currentUser: any },
-  res: Response,
-  next: NextFunction
-) {
+export function authenticate(req: Request, _: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.status(401).send("Authorization Required");
+    throw new HttpErrors().Unauthorized();
   }
 
-  jwt.verify(token, config.jwt.secret, async (err: any, data: any) => {
+  jwt.verify(token, config.jwt.secret, async (err: any, user: any) => {
     if (err) {
-      return res.status(403).send(err.message);
+      return next(
+        new HttpErrors().InvalidCredentials("Invalid access token", [
+          err.message,
+        ])
+      );
     }
 
-    const currentUser = await User.findById(data.id);
-
-    if (!currentUser) {
-      return res.send("Current user not found").status(404);
-    }
-
-    req.currentUser = currentUser;
+    req.currentUser = { id: user.id, email: user.email };
 
     next();
   });

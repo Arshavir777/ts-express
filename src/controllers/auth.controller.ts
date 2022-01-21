@@ -40,6 +40,8 @@ class AuthController extends BaseController {
         throw new HttpErrors().InvalidCredentials();
       }
 
+      delete user.password;
+
       return this.successResponse(res, {
         accessToken: signJwt(user),
         user,
@@ -62,6 +64,7 @@ class AuthController extends BaseController {
     try {
       const { login, email, password } = req.body;
       const user = await this.userRepository.create({ login, email, password });
+      delete user.password;
       return this.successResponse(res, user);
     } catch (error) {
       next(error);

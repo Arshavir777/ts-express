@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 
 /**
  * Interface to model the Photo Schema for TypeScript.
@@ -8,31 +8,49 @@ import { Document, Model, model, Schema } from "mongoose";
  * @param thumbnailUrl:string
  * @param ownerId:ObjectId
  */
-export interface TPhoto {
-  albumId: string;
+export interface IPhoto {
+  albumId: string | number;
   title: string;
   url: string;
   thumbnailUrl: string;
-  ownerId: string;
+  ownerId: Schema.Types.ObjectId;
 }
 
-const photoSchema: Schema = new Schema({
-  albumId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  title: {
-    type: String,
-  },
-  url: {
-    type: String,
-  },
-  thumbnailUrl: {
-    type: String,
-  },
-});
+export type TJpPhoto = {
+  id: number;
+  albumId: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+};
 
-const Photo: Model<TPhoto> = model("Photo", photoSchema);
+const photoSchema: Schema = new Schema<IPhoto>(
+  {
+    albumId: {
+      type: Number,
+      ref: "Album",
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    thumbnailUrl: {
+      type: String,
+    },
+    ownerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  { versionKey: false }
+);
+
+const Photo: Model<IPhoto> = model("Photo", photoSchema);
 
 export default Photo;

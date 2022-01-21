@@ -6,6 +6,8 @@ class MongoDataSource {
 
   async connect(): Promise<void> {
     try {
+      console.log({uri: config});
+      
       await mongoose.connect(config.mongoDbUri);
       console.log("MongoDB connected");
     } catch (error) {

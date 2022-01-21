@@ -1,6 +1,6 @@
 import { Application } from "express";
 import { authenticate } from "../middlewares/auth.middleware";
-import UserController from "../controllers/user.controller";
+import UserCtrl from "../controllers/user.controller";
 import { BaseRouter } from "./base/base.router";
 
 export class UserRouter extends BaseRouter {
@@ -9,7 +9,7 @@ export class UserRouter extends BaseRouter {
   }
 
   configureRoutes() {
-    this.app.get("/users", authenticate, UserController.find);
+    this.app.get("/users", authenticate, UserCtrl.getAll);
     return this.app;
   }
 }
