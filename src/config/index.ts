@@ -1,7 +1,7 @@
 import { IConfigApp } from "./types";
 
 export const config: IConfigApp = {
-  port: +(process.env.SERVER_PORT ?? 3000),
+  port: +(process.env.PORT ?? 3000),
   mongoDbUri: process.env.MONGO_DB_URI ?? "",
   jpApiBase: 'http://jsonplaceholder.typicode.com',
   jwt: {
