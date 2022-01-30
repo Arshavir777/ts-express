@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import logger from "morgan";
 import http from "http";
+import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 import { BaseRouter } from "./routes/base/base.router";
@@ -65,6 +66,7 @@ export class BootstrapApplication {
 
   initPreMiddlewares() {
     this.app.use(logger("dev"));
+    this.app.use(cors());
     this.app.use(express.json());
   }
 

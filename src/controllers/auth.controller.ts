@@ -29,7 +29,7 @@ class AuthController extends BaseController {
       const { login, password } = req.body;
 
       const user = await this.userRepository.findOne({
-        $or: [{ email: login }, { login }],
+        or: [{ email: login }, { login }],
       });
       if (!user) {
         throw new HttpErrors().NotFound("User not found");
