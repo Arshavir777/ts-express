@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express, { Application } from "express";
 import logger from "morgan";
 import http from "http";

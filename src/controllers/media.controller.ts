@@ -7,16 +7,15 @@ import { TJpPhoto, IPhoto } from "../models/photo.model";
 import { IAlbum } from "../models/album.model";
 import { uniqBy } from "lodash";
 import { paginate } from "../utils/paginate";
-import { ObjectId } from "mongodb";
+import Container, { Service } from "typedi";
 
+@Service()
 class MediaController extends BaseController {
-  photoRepository: PhotoRepository;
-  albumRepository: AlbumRepository;
-
-  constructor() {
+  constructor(
+    private readonly photoRepository: PhotoRepository,
+    private readonly albumRepository: AlbumRepository
+  ) {
     super();
-    this.photoRepository = new PhotoRepository();
-    this.albumRepository = new AlbumRepository();
   }
 
   /**
@@ -171,4 +170,4 @@ class MediaController extends BaseController {
   };
 }
 
-export default new MediaController();
+export default Container.get(MediaController);

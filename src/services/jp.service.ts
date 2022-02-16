@@ -1,7 +1,9 @@
 import axios, { Axios } from "axios";
 import { TJpPhoto } from "../models/photo.model";
 import { config } from "../config";
+import { Service } from "typedi";
 
+@Service()
 class JpService {
   private $client: Axios;
   constructor() {

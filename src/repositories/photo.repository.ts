@@ -1,7 +1,9 @@
 import { BaseRepository } from "./base/base.repository";
 import Photo, { IPhoto } from "../models/photo.model";
 import { FilterQuery, QueryOptions } from "mongoose";
+import { Service } from "typedi";
 
+@Service()
 export class PhotoRepository extends BaseRepository<IPhoto> {
   constructor() {
     super(Photo);

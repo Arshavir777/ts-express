@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
+import Container, { Service } from "typedi";
 import { UserRepository } from "../repositories/user.repository";
 import { BaseController } from "./base/base.controller";
 
 /**
  * @class UserController
  */
+@Service()
 class UserController extends BaseController {
-  userRepository: UserRepository;
-
-  constructor() {
+  constructor(private readonly userRepository: UserRepository) {
     super();
-    this.userRepository = new UserRepository();
   }
 
   /**
@@ -26,4 +25,4 @@ class UserController extends BaseController {
   };
 }
 
-export default new UserController();
+export default Container.get(UserController);

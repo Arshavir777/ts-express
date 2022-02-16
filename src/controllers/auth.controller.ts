@@ -3,16 +3,15 @@ import { UserRepository } from "../repositories/user.repository";
 import { BaseController } from "./base/base.controller";
 import { HttpErrors } from "../utils/errors";
 import { signJwt } from "../utils/auth";
+import Container, { Service } from "typedi";
 
 /**
  * @class AuthController
  */
+@Service()
 class AuthController extends BaseController {
-  userRepository: UserRepository;
-
-  constructor() {
+  constructor(private readonly userRepository: UserRepository) {
     super();
-    this.userRepository = new UserRepository();
   }
 
   /**
@@ -72,4 +71,4 @@ class AuthController extends BaseController {
   };
 }
 
-export default new AuthController();
+export default Container.get(AuthController);

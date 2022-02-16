@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import Container, { Service } from "typedi";
 import { config } from "../config";
 
+@Service()
 class MongoDataSource {
   constructor() {}
 
@@ -17,4 +19,4 @@ class MongoDataSource {
   }
 }
 
-export default new MongoDataSource();
+export default Container.get(MongoDataSource)
